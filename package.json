@@ -1,0 +1,24 @@
+{
+  "name": "mathsquiz",
+  "version": "0.0.1",
+  "description": "A maths quiz for groups of people",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gbusker/mathsquiz.git"
+  },
+  "author": "Gerd and Emma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gbusker/mathsquiz/issues"
+  },
+  "homepage": "https://github.com/gbusker/mathsquiz#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "mongodb": "^2.2.10",
+    "nodemon": "^1.11.0"
+  }
+}
