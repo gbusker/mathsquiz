@@ -4,8 +4,9 @@
   "description": "A maths quiz for groups of people",
   "main": "index.js",
   "scripts": {
-    "test": "node test/tests.js",
-    "start" :"node index.js"
+    "test": "mocha test/",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
