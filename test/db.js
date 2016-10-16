@@ -1,9 +1,10 @@
-var db = require("../lib/db.js")
+var mongoose = require("../app/models/db.js")
+var expect    = require("chai").expect;
 
-describe('db', function() {
+describe('Mongoose', function() {
 
-  it ('should connect', function(done) {
-    var connection = db.connect(done);
+  it ('should have a connection', function() {
+    expect(mongoose.connection).to.not.be.null
   })
 
 })
