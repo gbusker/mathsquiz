@@ -1,8 +1,14 @@
 html(lang='en')
   include header
   body
-    nav.navbar.navbar-default
+    nav.navbar.navbar-inverse.navbar-fixed-top
       div.container-fluid
         div.navbar-header
           a.navbar-brand(href='#')
-            p.navbar-text Maths Quiz
+            p.navbar-text Maths Quiz Admin
+        div#navbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li.active
+              a(href='#') Teams
+            li
+              a(href='#') Leaderboard
