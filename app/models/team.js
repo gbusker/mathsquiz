@@ -6,9 +6,10 @@ const Schema = mongoose.Schema;
 const TeamSchema = new Schema({
     name: {type: String,
 	   index: {unique: true, dropDups: true},
-	   default: '',
-	   trim: true}
-})
+	   trim: true,
+	   required: true
+	  }    
+}, { timestamps: true })
 
 mongoose.model('Team', TeamSchema);
 
