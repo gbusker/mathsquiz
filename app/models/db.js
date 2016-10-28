@@ -1,5 +1,6 @@
 var mongoose = require('mongoose')
-var URI = 'mongodb://devuser:FireSkinMan@ds057806.mlab.com:57806/mathsquiz'
+// var URI = 'mongodb://devuser:FireSkinMan@ds057806.mlab.com:57806/mathsquiz'
+var URI = 'mongodb://localhost/mathsquiz';
 mongoose.connect(URI);
 
 // CONNECTION EVENTS

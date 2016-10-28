@@ -15,16 +15,18 @@ html(lang='en')
 
     div.container(role='main')
       h1 Team List
-      ul
+      table.table
+        tr
+          th Team name
+          th Created at
         each t in teams
-          li= t.name
+          tr
+            td= t.name
+            td= t.createdAt
 
-
+    div.container
       form(method='post')
-        fieldset
-          legend Name
-          p
-            label(for="team[name]") Team name
-              input(type='text', name='team[name]', value=team.name)
-        p.buttons
+        p
+          label(for="team[name]") Team name
+            input(type='text', name='team[name]', value=team.name)
           input(type='submit', value='Create')

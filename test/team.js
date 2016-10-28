@@ -1,5 +1,5 @@
-var mongoose = require("../app/models/db")
-var team = require("../app/models/team")
+var mongoose = require("mongoose")
+//var team = require("../app/models/team")
 var Team = mongoose.model('Team')
 
 var should = require("should")
@@ -23,6 +23,16 @@ describe('Team', function() {
         done()
       })
     })
+    it('should give me related quizes', function(done) {
+      Team.create({name: "quiz ref name"}, function(err, createdTeam) {
+        should.not.exist(err)
+        createdTeam.addQuiz(function(err, createdQuiz) {
+          should.not.exists(err)
+          done()
+        })
+      })
+    });
+
 
   });
 

@@ -2,10 +2,16 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
+const fs = require('fs')
+const join = require('path').join;
 
-require('./app/models/db')
-require('./app/models/team')
-const Team = mongoose.model('Team')
+// Bootstrap models
+const models = join(__dirname, 'app/models');
+fs.readdirSync(models)
+  .filter(file => ~file.search(/^[^\.].*\.js$/))
+  .forEach(file => require(join(models, file)));
+
+var Team = mongoose.model('Team')
 
 // Set up the pug view engine
 app.set('views', './app/views');
