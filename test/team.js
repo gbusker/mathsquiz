@@ -23,7 +23,7 @@ describe('Team', function() {
         done()
       })
     })
-    it('should give me related quizes', function(done) {
+    it('should create quizes', function(done) {
       Team.create({name: "quiz ref name"}, function(err, createdTeam) {
         should.not.exist(err)
         createdTeam.addQuiz(function(err, createdQuiz) {
@@ -32,8 +32,24 @@ describe('Team', function() {
         })
       })
     });
-
+    it('should have quizes', function(done) {
+      Team.find({name: "quiz ref name"}, function(err, team)  {
+        should.not.exist(err)
+        done()
+      })
+    })
 
   });
+  describe('#load', function (){
+    it('should load a team', function(done) {
+      Team.loadByName("quiz ref name", function (err, team) {
+        should.not.exist()
+        should.exist(team)
+        should.exist(team.name)
+        done()
+      })
+    })
+  })
+
 
 });

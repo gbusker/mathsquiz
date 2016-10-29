@@ -15,6 +15,12 @@ const TeamSchema = new Schema({
 	  }
 }, { timestamps: true })
 
+TeamSchema.statics = {
+  loadByName: function(name, callback) {
+    return this.findOne({name: name}).exec(callback)
+  }
+}
+
 TeamSchema.methods = {
   addQuiz: function (callback) {
     Quiz.create({team: this.id}, callback)
