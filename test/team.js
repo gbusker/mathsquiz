@@ -43,9 +43,15 @@ describe('Team', function() {
   describe('#load', function (){
     it('should load a team', function(done) {
       Team.loadByName("quiz ref name", function (err, team) {
-        should.not.exist()
+        should.not.exist(err)
         should.exist(team)
         should.exist(team.name)
+        done()
+      })
+    })
+    it('should include quizzes', function(done) {
+      Team.loadByName("quiz ref name", function (err,team) {
+        team.quizzes.length.should.equal(1)
         done()
       })
     })
