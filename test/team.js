@@ -26,7 +26,7 @@ describe('Team', function() {
     it('should create quizes', function(done) {
       Team.create({name: "quiz ref name"}, function(err, createdTeam) {
         should.not.exist(err)
-        createdTeam.addQuiz(function(err, createdQuiz) {
+        createdTeam.addQuiz(10, function(err, createdQuiz) {
           should.not.exists(err)
           done()
         })
@@ -36,6 +36,15 @@ describe('Team', function() {
       Team.find({name: "quiz ref name"}, function(err, team)  {
         should.not.exist(err)
         done()
+      })
+    })
+    it('should create members', function(done) {
+      Team.create({name: "member ref"}, function(err, createdTeam) {
+        should.not.exist(err)
+        createdTeam.addMember({name: 'member name'}, function(err, createdQuiz) {
+          should.not.exists(err)
+          done()
+        })
       })
     })
 
@@ -49,9 +58,10 @@ describe('Team', function() {
         done()
       })
     })
+    // We're sort of relying on the result of the above test here
     it('should include quizzes', function(done) {
       Team.loadByName("quiz ref name", function (err,team) {
-        team.quizzes.length.should.equal(1)
+        team.quiz.length.should.equal(10)
         done()
       })
     })

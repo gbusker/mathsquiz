@@ -6,3 +6,11 @@ html(lang='en')
         div.navbar-header
           a.navbar-brand(href='#')
             p.navbar-text Maths Quiz
+
+    div.container(role='main')
+      h1 Enter your team name
+      form
+        p
+          label(for="team[name]") Team name
+            input(type='text', name='team[name]', value='')
+            input(type='submit', value='Join')

@@ -30,7 +30,20 @@ app.use(express.static('public'));
 
 // Serve templates
 app.get('/', function(req, res) {
-  res.render('index', {});
+  console.log(req)
+  console.log(res)
+  if ( req.query['team'] ) {
+    Team.loadByName(req.query.team.name, function (err, team) {
+      if (err) {
+        res.render('index',{})
+      } else {
+        // Set cookie to team._id
+        res.redirect('/play')
+      }
+    })
+  } else {
+    res.render('index', {});
+  }
 });
 
 app.get('/admin', function(req, res) {

@@ -4,12 +4,13 @@ A quiz system for Emma's school
 ## Functionality
 
 ### Administrator:
-* Add a team name
-* Open a quiz for a Teams
+* Create a team with questions
+* View team members & quiz results
 * View results of all Teams
 
 ### Teams:
 * Join a team (admin gives you team name)
-* Start quiz when all members joined
-* Show questions until team has answered 999
-* Show results
+ * Enter your team name
+ * See how many have joined (refereshing)
+ * When all have joined change to "start now"
+ * Show your first question
