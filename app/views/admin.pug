@@ -1,6 +1,6 @@
 html(lang='en')
   include header
-  body
+  body.withnav
     nav.navbar.navbar-inverse.navbar-fixed-top
       div.container-fluid
         div.navbar-header
@@ -19,10 +19,14 @@ html(lang='en')
         tr
           th Team name
           th Created at
+          th Quiz length
+          th Team members
         each t in teams
           tr
             td= t.name
-            td= t.createdAt
+            td= moment(t.createdAt).format('YYYY-MM-DD hh:mm')
+            td= t.quiz.length
+            td= t.members.length
 
     div.container
       form(method='post')

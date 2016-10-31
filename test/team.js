@@ -38,13 +38,25 @@ describe('Team', function() {
         done()
       })
     })
+    var member_id
     it('should create members', function(done) {
       Team.create({name: "member ref"}, function(err, createdTeam) {
         should.not.exist(err)
-        createdTeam.addMember({name: 'member name'}, function(err, createdQuiz) {
+        createdTeam.addMember({name: 'member name'}, function(err, member) {
           should.not.exists(err)
+          should.exist(member)
+          should(member.name).equal('member name')
+          member_id = member._id
           done()
         })
+      })
+    })
+    it('should get team by member', function(done) {
+      Team.loadByMember(member_id, function (err, team){
+        should.not.exist(err)
+        should.exist(team)
+        should(team.name).equal('member ref')
+        done()
       })
     })
 
@@ -62,6 +74,12 @@ describe('Team', function() {
     it('should include quizzes', function(done) {
       Team.loadByName("quiz ref name", function (err,team) {
         team.quiz.length.should.equal(10)
+        done()
+      })
+    })
+    it('should pass error if load fails', function(done) {
+      Team.loadByName('random', function(err, team) {
+        should.not.exist(team)
         done()
       })
     })

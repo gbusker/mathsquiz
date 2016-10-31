@@ -1,6 +1,5 @@
 var mongoose = require("../app/models/db")
 var team = require('../app/models/team')
-var member = require("../app/models/member")
 var should = require("should")
 
 var Team = mongoose.model('Team')
