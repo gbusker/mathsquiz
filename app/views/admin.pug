@@ -26,7 +26,7 @@ html(lang='en')
             td= t.name
             td= moment(t.createdAt).format('YYYY-MM-DD hh:mm')
             td= t.quiz.length
-            td= t.members.length
+            td= t.members ? t.members.map(function(member){return member.name}).join() : 0
 
     div.container
       form(method='post')

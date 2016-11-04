@@ -59,7 +59,6 @@ describe('Team', function() {
         done()
       })
     })
-
   });
   describe('#load', function (){
     it('should load a team', function(done) {
@@ -67,6 +66,14 @@ describe('Team', function() {
         should.not.exist(err)
         should.exist(team)
         should.exist(team.name)
+        done()
+      })
+    })
+    it('should include members', function(done){
+      Team.loadByName('member ref', function(err, team) {
+        should.not.exist(err)
+        should.exist(team.members)
+        team.members.length.should.equal(1)
         done()
       })
     })

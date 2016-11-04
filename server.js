@@ -14,6 +14,7 @@ fs.readdirSync(models)
   .forEach(file => require(join(models, file)));
 
 var Team = mongoose.model('Team')
+var Member = mongoose.model('Member')
 
 // Set up the pug view engine
 app.set('views', './app/views');
@@ -37,7 +38,7 @@ app.get('/', function(req, res) {
     Team.loadByName(req.query.teamname, function (err, team) {
       if (team) {
         team.addMember({name: req.query.membername}, function(err, member){
-          res.cookie('team', team._id + ":" + member._id ,{ maxAge: 900000, httpOnly: true })
+          res.cookie('team', member._id ,{ maxAge: 900000, httpOnly: true })
           res.redirect('/play')
         })
       } else {
@@ -49,22 +50,12 @@ app.get('/', function(req, res) {
   }
 });
 
-function find_member(members, key) {
-  for (var i=0; i<members.length; i++) {
-    console.log(members[i])
-
-    if ( members[i]._id === key ) {
-      return members[i]
-    }
-  }
-  return {}
-}
 
 app.get('/play', function (req, res) {
   if ( req.cookies.team ) {
-    c = req.cookies.team.split(':')
-    Team.load(c[0], function(err, team) {
-      res.render('play', {team: team, member: find_member(team.members, c[1])})
+    Member.load(req.cookies.team, function(err, member) {
+      console.log(member)
+      res.render('play', {member: member})
     })
   } else {
     res.redirect('/');
@@ -72,7 +63,8 @@ app.get('/play', function (req, res) {
 })
 
 app.get('/admin', function(req, res) {
-  Team.find().exec(function(err, teams){
+  Team.find().populate('members').exec(function(err, teams){
+    console.log(teams)
     res.render('admin', { teams: teams, team: '', moment: moment });
   })
 });

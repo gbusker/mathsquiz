@@ -7,6 +7,11 @@ const MemberSchema = new Schema({
   name: String,
   team: {type: Schema.Types.ObjectId, ref: 'Team'}
 })
+MemberSchema.statics = {
+  load: function(id, callback) {
+    return this.findOne({_id: id}).exec(callback)
+  }
+}
 var Member = mongoose.model('Member', MemberSchema)
 
 const TeamSchema = new Schema({
@@ -22,10 +27,15 @@ const TeamSchema = new Schema({
       answered_by: Number
   }]
 }, { timestamps: true })
+TeamSchema.virtual('members',{
+  ref: 'Member',
+  localField: '_id',
+  foreignField: 'team'
+})
 
 TeamSchema.statics = {
   loadByName: function(name, callback) {
-    return this.findOne({name: name}).populate('quizzes').exec(callback)
+    return this.findOne({name: name}).populate('quizzes').populate('members').exec(callback)
   },
   load: function(id, callback) {
     return this.findOne({_id: id}).populate('members').exec(callback)
@@ -56,9 +66,6 @@ TeamSchema.methods = {
         a: randomint(10),
         b: randomint(10)
       })
-  },
-  members: function (callback) {
-    Member.find({team: this._id}, callback)
   },
   addMember: function(data, callback) {
     data.team = this._id
