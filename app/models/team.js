@@ -9,7 +9,7 @@ const MemberSchema = new Schema({
 })
 MemberSchema.statics = {
   load: function(id, callback) {
-    return this.findOne({_id: id}).exec(callback)
+    return this.findOne({_id: id}).populate({path: 'team', populate: {path: 'members'}}).exec(callback)
   }
 }
 var Member = mongoose.model('Member', MemberSchema)

@@ -38,7 +38,7 @@ app.get('/', function(req, res) {
     Team.loadByName(req.query.teamname, function (err, team) {
       if (team) {
         team.addMember({name: req.query.membername}, function(err, member){
-          res.cookie('team', member._id ,{ maxAge: 900000, httpOnly: true })
+          res.cookie('team', member._id ,{ maxAge: 60*60*1000, httpOnly: true })
           res.redirect('/play')
         })
       } else {
@@ -50,15 +50,33 @@ app.get('/', function(req, res) {
   }
 });
 
-
 app.get('/play', function (req, res) {
   if ( req.cookies.team ) {
     Member.load(req.cookies.team, function(err, member) {
-      console.log(member)
       res.render('play', {member: member})
     })
   } else {
     res.redirect('/');
+  }
+})
+
+app.get('/members', function(req,res){
+  if ( req.cookies.team ) {
+    Member.load(req.cookies.team, function(err, member) {
+      res.render('play/members', {members: member.team.members})
+    })
+  } else {
+    res.status(404).send('Not found');
+  }
+})
+
+app.get('/quiz', function(req,res) {
+  // Check if started
+  if ( req.query.action === 'start') {
+    res.render('play/quiz', {})
+  }
+  else {
+    res.status(404).send('quiz not yet started')
   }
 })
 

@@ -10,4 +10,22 @@ html(lang='en')
     div.container(role='main')
       div.panel.panel-default
         div.panel-heading
-          p #{member.name}
+          p
+            b user:
+            = member.name
+          p
+            b team:
+            = member.team.name
+        div.panel-body
+          div#members
+        div.panel-body
+          div#quiz
+            button.btn.btn-default(onClick='startQuiz()') Start
+
+
+
+    script.
+      $(document).ready(function(){
+        $('#members').load('/members')
+      })
+    script(src='js/quiz.js')

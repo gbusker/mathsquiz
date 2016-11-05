@@ -1,4 +1,5 @@
 superagent = require('superagent')
+expect = require('chai').expect
 
 describe('index page', function() {
     it('should load', function () {
