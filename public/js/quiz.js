@@ -1,3 +1,3 @@
 function startQuiz() {
-  $('#quiz').load('/quiz?action=start');
+  $('#quiz').load('/quizstart');
 }

@@ -70,14 +70,30 @@ app.get('/members', function(req,res){
   }
 })
 
+app.get('/quizstart', function(req, res) {
+  Member.load(req.cookies.team, function(err, member) {
+    if ( member.team.started ) {
+      res.render('play/quiz', {member: member})
+    } else {
+      member.team.started = Date.now()
+      member.team.startedBy = member._id
+      member.team.save(function(err, product, num) {
+        res.render('play/quiz', {member: member})
+      })
+    }
+  })
+})
+
 app.get('/quiz', function(req,res) {
   // Check if started
-  if ( req.query.action === 'start') {
-    res.render('play/quiz', {})
-  }
-  else {
-    res.status(404).send('quiz not yet started')
-  }
+  Member.load(req.cookies.team, function(err, member) {
+    if ( member.team.started ) {
+      res.render('play/quiz', {member: member})
+    }
+    else {
+      res.status(404).send('quiz not yet started')
+    }
+  })
 })
 
 app.get('/admin', function(req, res) {

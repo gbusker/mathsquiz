@@ -25,7 +25,9 @@ const TeamSchema = new Schema({
       b: Number,
       answer: Number,
       answered_by: Number
-  }]
+  }],
+  started: {type: Date},
+  startedBy: {type: Schema.Types.ObjectId, ref: 'Member'}
 }, { timestamps: true })
 TeamSchema.virtual('members',{
   ref: 'Member',

@@ -19,12 +19,14 @@ html(lang='en')
         tr
           th Team name
           th Created at
+          th Started at
           th Quiz length
           th Team members
         each t in teams
           tr
             td= t.name
             td= moment(t.createdAt).format('YYYY-MM-DD hh:mm')
+            td= t.started ? moment(t.started).format('YYYY-MM-DD hh:mm') : ''
             td= t.quiz.length
             td= t.members ? t.members.map(function(member){return member.name}).join() : 0
 

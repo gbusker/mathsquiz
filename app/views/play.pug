@@ -29,3 +29,9 @@ html(lang='en')
         $('#members').load('/members')
       })
     script(src='js/quiz.js')
+    if member.team.started
+      script.
+        $(document).ready(function(){
+          $('#quiz').load('/quiz');
+        })
+    end
