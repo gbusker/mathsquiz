@@ -98,7 +98,6 @@ app.get('/quiz', function(req,res) {
 
 app.get('/admin', function(req, res) {
   Team.find().populate('members').exec(function(err, teams){
-    console.log(teams)
     res.render('admin', { teams: teams, team: '', moment: moment });
   })
 });

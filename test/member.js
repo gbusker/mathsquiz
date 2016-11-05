@@ -10,17 +10,31 @@ describe('Member', function() {
 	  Member.remove().exec()
   })
   var member_id
-  describe('#create', function() {
+  describe('#addMember', function() {
 	  it('should create a member', function(done) {
 	    Team.create({name: 'teamname'}, function(err, createdTeam){
 		    should.not.exist(err)
-		    Member.create({name: "Emma", team: createdTeam}, function(err, createdMember) {
+		    createdTeam.addMember({name: "Emma"}, function(err, createdMember) {
           member_id = createdMember._id
 		      should.not.exist(err)
 		      done()
 		    })
 	    })
 	  })
+    it('should not create a second member', function(done) {
+      Team.loadByName('teamname', function(err, team){
+        should.not.exist(err)
+        should.exist(team)
+        team.addMember({name: 'Emma'}, function(err, createdMember) {
+          should.not.exist(err)
+          should.exist(createdMember)
+          Team.loadByName('teamname', function(err, team){
+            team.members.length.should.equal(1)
+            done()
+          })
+        })
+      })
+    })
   })
   describe('#load', function() {
     it('should load', function(done) {

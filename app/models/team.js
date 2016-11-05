@@ -7,6 +7,7 @@ const MemberSchema = new Schema({
   name: String,
   team: {type: Schema.Types.ObjectId, ref: 'Team'}
 })
+MemberSchema.index({name: 1, team: 1}, {unique: true})
 MemberSchema.statics = {
   load: function(id, callback) {
     return this.findOne({_id: id}).populate({path: 'team', populate: {path: 'members'}}).exec(callback)
@@ -71,9 +72,14 @@ TeamSchema.methods = {
   },
   addMember: function(data, callback) {
     data.team = this._id
-    Member.create(data, callback)
+    Member.find(data, function(err, members){
+      if ( (!err) && members.length > 0 ) {
+        callback(null, members[0])
+      } else {
+        return Member.create(data, callback)
+      }
+    })
   }
-
 }
 
 mongoose.model('Team', TeamSchema);
