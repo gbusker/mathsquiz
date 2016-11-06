@@ -7,6 +7,7 @@ var Member = mongoose.model('Member')
 
 describe('Member', function() {
   before(function() {
+    Team.remove().exec()
 	  Member.remove().exec()
   })
   var member_id

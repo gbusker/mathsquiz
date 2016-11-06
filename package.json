@@ -4,6 +4,7 @@
   "description": "A maths quiz for groups of people",
   "main": "index.js",
   "scripts": {
+    "coverage": "istanbul cover _mocha -- -R spec",
     "test": "mocha test/",
     "start": "node server.js",
     "dev": "nodemon server.js"
@@ -29,6 +30,7 @@
     "pug": "^2.0.0-beta6"
   },
   "devDependencies": {
+    "istanbul": "^0.4.5",
     "should": "^11.1.1",
     "superagent": "^2.3.0"
   }

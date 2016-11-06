@@ -5,7 +5,7 @@ describe('admin page', function() {
 	superagent
 	    .get('http://localhost:3000/admin')
 	    .end(function(res){
-		expect(res.status).to.equal(200)
+        expect(res.status).to.equal(200)
 	    })
     })
 })
