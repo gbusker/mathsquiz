@@ -77,13 +77,7 @@ describe('Team', function() {
         done()
       })
     })
-    // We're sort of relying on the result of the above test here
-    it('should include quizzes', function(done) {
-      Team.loadByName("quiz ref name", function (err,team) {
-        team.quiz.length.should.equal(10)
-        done()
-      })
-    })
+
     it('should pass error if load fails', function(done) {
       Team.loadByName('random', function(err, team) {
         should.not.exist(team)

@@ -15,18 +15,21 @@ MemberSchema.statics = {
 }
 var Member = mongoose.model('Member', MemberSchema)
 
+const QuizSchema = new Schema({
+  a: Number,
+  b: Number,
+  assigned: {type: Schema.Types.ObjectId, ref: 'Member'},
+  team: {type: Schema.Types.ObjectId, ref: 'Team'},
+  answer: Number
+})
+var Quiz = mongoose.model('Quiz', QuizSchema)
+
 const TeamSchema = new Schema({
   name: {type: String,
 	   index: {unique: true, dropDups: true},
 	   trim: true,
 	   required: true
   },
-  quiz: [{
-      a: Number,
-      b: Number,
-      answer: Number,
-      answered_by: Number
-  }],
   started: {type: Date},
   startedBy: {type: Schema.Types.ObjectId, ref: 'Member'}
 }, { timestamps: true })
@@ -35,13 +38,18 @@ TeamSchema.virtual('members',{
   localField: '_id',
   foreignField: 'team'
 })
+TeamSchema.virtual('quiz', {
+  ref: 'Quiz',
+  localField: '_id',
+  foreignField: 'team'
+})
 
 TeamSchema.statics = {
   loadByName: function(name, callback) {
-    return this.findOne({name: name}).populate('quizzes').populate('members').exec(callback)
+    return this.findOne({name: name}).populate('quiz').populate('members').exec(callback)
   },
   load: function(id, callback) {
-    return this.findOne({_id: id}).populate('members').exec(callback)
+    return this.findOne({_id: id}).populate('quiz').populate('members').exec(callback)
   },
   loadByMember: function(id, callback) {
     var team = this
@@ -61,14 +69,25 @@ TeamSchema.methods = {
     for (var i=0; i<nquestions; i++) {
       this.addQuestion();
     }
-    this.save(callback);
+    this.save(callback)
   },
   addQuestion: function (callback) {
-    this.quiz.push(
-      {
-        a: randomint(10),
-        b: randomint(10)
-      })
+    Quiz.create({a: randomint(10), b: randomint(10), team: this._id}, callback)
+  },
+  nextQuestion: function(member, callback) {
+    var team = this
+    Quiz.findOne({team: team._id, assigned: member._id, answer: null}, function(err, q){
+      if (q) {
+        // This should be a question for member
+        callback(err, q)
+      } else {
+        // No question lets make one
+        Quiz.findOne({team: team._id, assigned: null}, function(err, q){
+          q.assigned = member._id
+          q.save(callback)
+        })
+      }
+    })
   },
   addMember: function(data, callback) {
     data.team = this._id
@@ -76,7 +95,7 @@ TeamSchema.methods = {
       if ( (!err) && members.length > 0 ) {
         callback(null, members[0])
       } else {
-        return Member.create(data, callback)
+        Member.create(data, callback)
       }
     })
   }

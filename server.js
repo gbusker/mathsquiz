@@ -51,13 +51,13 @@ app.get('/', function(req, res) {
 });
 
 app.get('/play', function (req, res) {
-  if ( req.cookies.team ) {
-    Member.load(req.cookies.team, function(err, member) {
+  Member.load(req.cookies.team, function(err, member) {
+    if ( !err && member) {
       res.render('play', {member: member})
-    })
-  } else {
-    res.redirect('/');
-  }
+    } else {
+      res.redirect('/');
+    }
+  })
 })
 
 app.get('/members', function(req,res){
@@ -88,7 +88,14 @@ app.get('/quiz', function(req,res) {
   // Check if started
   Member.load(req.cookies.team, function(err, member) {
     if ( member.team.started ) {
-      res.render('play/quiz', {member: member})
+      // Get next question for member
+      member.team.nextQuestion(member, function(question){
+        if ( question ) {
+          res.render('play/quiz', {member: member})
+        } else {
+          res.render('play/finished', {member: member})
+        }
+      })
     }
     else {
       res.status(404).send('quiz not yet started')
@@ -97,7 +104,7 @@ app.get('/quiz', function(req,res) {
 })
 
 app.get('/admin', function(req, res) {
-  Team.find().populate('members').exec(function(err, teams){
+  Team.find().populate('quiz').populate('members').exec(function(err, teams){
     res.render('admin', { teams: teams, team: '', moment: moment });
   })
 });
@@ -108,6 +115,11 @@ app.post('/admin', function(req, res) {
     if (err) {
       console.log('save error: ' + err);
     }
+    team.addQuiz(10, function(err){
+      if (err) {
+        console.log('error creating quiz: ' + err);
+      }
+    })
   })
   return res.redirect('/admin')
 })
