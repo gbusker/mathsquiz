@@ -84,8 +84,13 @@ TeamSchema.methods = {
       } else {
         // No question lets make one
         Quiz.findOne({team: team._id, assigned: null}, function(err, q){
-          q.assigned = member._id
-          q.save(callback)
+          if ( q ) {
+            q.assigned = member._id
+            q.save(callback)
+          } else {
+            // No more questions
+            callback(null, null)
+          }
         })
       }
     })
