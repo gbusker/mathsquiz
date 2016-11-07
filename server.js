@@ -13,8 +13,9 @@ fs.readdirSync(models)
   .filter(file => ~file.search(/^[^\.].*\.js$/))
   .forEach(file => require(join(models, file)));
 
-var Team = mongoose.model('Team')
+var Team =   mongoose.model('Team')
 var Member = mongoose.model('Member')
+var Quiz =   mongoose.model('Quiz')
 
 // Set up the pug view engine
 app.set('views', './app/views');
@@ -89,9 +90,9 @@ app.get('/quiz', function(req,res) {
   Member.load(req.cookies.team, function(err, member) {
     if ( member.team.started ) {
       // Get next question for member
-      member.team.nextQuestion(member, function(question){
+      member.team.nextQuestion(member, function(err, question){
         if ( question ) {
-          res.render('play/quiz', {member: member})
+          res.render('play/quiz', {member: member, q: question})
         } else {
           res.render('play/finished', {member: member})
         }
@@ -99,6 +100,24 @@ app.get('/quiz', function(req,res) {
     }
     else {
       res.status(404).send('quiz not yet started')
+    }
+  })
+})
+
+app.post('/quiz', function(req, res) {
+  Member.load(req.cookies.team, function(err, member) {
+    if ( req.body.quiz_id && req.body.result ) {
+      Quiz.update({ _id: req.body.quiz_id}, { $set: {answer: req.body.result, answeredAt: Date.now()}}, function(err, q){
+        console.log(err)
+        console.log(q)
+        member.team.nextQuestion(member, function(err, question){
+          if ( question ) {
+            res.render('play/quiz', {member: member, q: question})
+          } else {
+            res.render('play/finished', {member: member})
+          }
+        })
+      })
     }
   })
 })

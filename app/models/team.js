@@ -20,7 +20,8 @@ const QuizSchema = new Schema({
   b: Number,
   assigned: {type: Schema.Types.ObjectId, ref: 'Member'},
   team: {type: Schema.Types.ObjectId, ref: 'Team'},
-  answer: Number
+  answer: Number,
+  answeredAt: Date
 })
 var Quiz = mongoose.model('Quiz', QuizSchema)
 
