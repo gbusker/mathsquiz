@@ -1,11 +1,7 @@
 var mongoose = require('mongoose')
 // var URI = 'mongodb://devuser:FireSkinMan@ds057806.mlab.com:57806/mathsquiz'
-var URI
-if ( process.env.MONGODB_URI) {
-  URI = process.env.MONGODB_URI
-} else {
-  URI = 'mongodb://localhost/mathsquiz'
-}
+
+var URI = process.env.MONGODB_URI || 'mongodb://localhost/mathsquiz'
 mongoose.connect(URI);
 
 // CONNECTION EVENTS

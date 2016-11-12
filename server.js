@@ -7,6 +7,10 @@ const fs = require('fs')
 const join = require('path').join;
 const moment = require('moment')
 
+// Port to listen to
+var port = process.env.PORT || 3000;
+
+
 // Bootstrap models
 const models = join(__dirname, 'app/models');
 fs.readdirSync(models)
@@ -26,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser());
 
 // Start server on port 3000
-app.listen(3000, function() {
+app.listen(PORT, function() {
   console.log("Server started.");
 });
 
