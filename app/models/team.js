@@ -73,7 +73,7 @@ TeamSchema.methods = {
     this.save(callback)
   },
   addQuestion: function (callback) {
-    Quiz.create({a: randomint(10), b: randomint(10), team: this._id}, callback)
+    Quiz.create({a: randomint(12), b: randomint(12), team: this._id}, callback)
   },
   nextQuestion: function(member, callback) {
     var team = this
