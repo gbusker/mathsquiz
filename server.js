@@ -111,15 +111,18 @@ app.get('/quiz', function(req,res) {
 app.post('/quiz', function(req, res) {
   Member.load(req.cookies.team, function(err, member) {
     if ( req.body.quiz_id && req.body.result ) {
-      Quiz.update({ _id: req.body.quiz_id}, { $set: {answer: req.body.result, answeredAt: Date.now()}}, function(err, q){
-        console.log(err)
-        console.log(q)
-        member.team.nextQuestion(member, function(err, question){
-          if ( question ) {
-            res.render('play/quiz', {member: member, q: question})
-          } else {
-            res.render('play/finished', {member: member})
-          }
+      Quiz.findOne({_id: req.body.quiz_id }, function(err, q){
+        q.answer = req.body.result
+        q.answeredAt = Date.now()
+        q.correct = q.a*q.b == req.body.result
+        q.save(function(err, q){
+          member.team.nextQuestion(member, function(err, question){
+            if ( question ) {
+              res.render('play/quiz', {member: member, q: question})
+            } else {
+              res.render('play/finished', {member: member})
+            }
+          })
         })
       })
     }

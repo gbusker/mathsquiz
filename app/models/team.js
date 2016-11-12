@@ -21,6 +21,7 @@ const QuizSchema = new Schema({
   assigned: {type: Schema.Types.ObjectId, ref: 'Member'},
   team: {type: Schema.Types.ObjectId, ref: 'Team'},
   answer: Number,
+  correct: Boolean,
   answeredAt: Date
 })
 var Quiz = mongoose.model('Quiz', QuizSchema)
