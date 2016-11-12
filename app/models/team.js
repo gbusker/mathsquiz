@@ -32,7 +32,8 @@ const TeamSchema = new Schema({
 	   required: true
   },
   started: {type: Date},
-  startedBy: {type: Schema.Types.ObjectId, ref: 'Member'}
+  startedBy: {type: Schema.Types.ObjectId, ref: 'Member'},
+  ended: {type: Date}
 }, { timestamps: true })
 TeamSchema.virtual('members',{
   ref: 'Member',
@@ -72,6 +73,21 @@ TeamSchema.methods = {
     }
     this.save(callback)
   },
+  tryEnd: function(callback) {
+    var team = this
+    Quiz.findOne({team: team._id, answeredAt: null}, function(err, q){
+      console.log("try end:" + q)
+      if ( q ) {
+        // Nothing
+        callback(null,null)
+      }
+      else {
+        // Close quiz
+        team.ended = Date.now()
+        team.save(callback)
+      }
+    })
+  },
   addQuestion: function (callback) {
     Quiz.create({a: randomint(12), b: randomint(12), team: this._id}, callback)
   },
@@ -88,8 +104,14 @@ TeamSchema.methods = {
             q.assigned = member._id
             q.save(callback)
           } else {
-            // No more questions
-            callback(null, null)
+            if ( ! team.ended )
+              team.tryEnd(function(err){
+                callback(err, null)
+              })
+            else {
+              // No more questions
+              callback(null, null)
+            }
           }
         })
       }
