@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
+const auth = require('http-auth');
 const mongoose = require('mongoose')
 const fs = require('fs')
 const join = require('path').join;
@@ -28,6 +29,14 @@ app.set('view engine', 'pug');
 // Parser
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser());
+
+// auth
+var basic = auth.basic({
+    realm: "Admin area"
+  }, (username, password, callback) => {
+    callback(username === "username" && password === "password");
+  }
+);
 
 // Start server on port 3000
 app.listen(PORT, function() {
@@ -129,7 +138,7 @@ app.post('/quiz', function(req, res) {
   })
 })
 
-app.get('/admin', function(req, res) {
+app.get('/admin', auth.connect(basic), function(req, res) {
 //  Team.find().populate('quiz').populate('members').exec(function(err, teams){
   Team.stats(function(err, teams) {
     console.log(teams[0].quiz.filter(function(q){return (q.a*q.b==q.answer)}).length)
@@ -137,7 +146,7 @@ app.get('/admin', function(req, res) {
   })
 });
 
-app.post('/admin', function(req, res) {
+app.post('/admin', auth.connect(basic), function(req, res) {
   const team = new Team({name: req.body.team.name})
   team.save(function (err) {
     if (err) {

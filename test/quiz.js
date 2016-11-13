@@ -4,6 +4,7 @@ var should = require("should")
 
 var Quiz = mongoose.model('Quiz')
 var Team = mongoose.model('Team');
+var Member = mongoose.model('Member')
 
 var team;
 var member;
@@ -12,6 +13,7 @@ describe('Quiz', function() {
   before(function() {
 	   Team.find({name: 'quiztest'}).remove().exec()
      Quiz.find().remove().exec()
+     Member.find().remove().exec()
      Team.create({name: 'quiztest'}, function(err, createdTeam) {
        team = createdTeam
        createdTeam.addMember({name: 'testmember'}, function(err, createdMember){

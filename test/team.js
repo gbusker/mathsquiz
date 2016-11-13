@@ -1,13 +1,17 @@
 var mongoose = require("mongoose")
-//var team = require("../app/models/team")
-var Team = mongoose.model('Team')
-
 var should = require("should")
+
+var Team = mongoose.model('Team')
+var Member = mongoose.model('Member')
+var Quiz = mongoose.model('Quiz')
+
 
 describe('Team', function() {
 
   before(function() {
     Team.remove().exec()
+    Member.remove().exec()
+    Quiz.remove().exec()
   })
 
   describe('#create', function() {
@@ -26,6 +30,7 @@ describe('Team', function() {
     it('should create quizes', function(done) {
       Team.create({name: "quiz ref name"}, function(err, createdTeam) {
         should.not.exist(err)
+        should.exist(createdTeam)
         createdTeam.addQuiz(10, function(err, createdQuiz) {
           should.not.exists(err)
           done()
