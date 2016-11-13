@@ -22,6 +22,9 @@ var Team =   mongoose.model('Team')
 var Member = mongoose.model('Member')
 var Quiz =   mongoose.model('Quiz')
 
+// Controllers
+const admin = require('./app/controller/admin')
+
 // Set up the pug view engine
 app.set('views', './app/views');
 app.set('view engine', 'pug');
@@ -138,25 +141,5 @@ app.post('/quiz', function(req, res) {
   })
 })
 
-app.get('/admin', auth.connect(basic), function(req, res) {
-//  Team.find().populate('quiz').populate('members').exec(function(err, teams){
-  Team.stats(function(err, teams) {
-    console.log(teams[0].quiz.filter(function(q){return (q.a*q.b==q.answer)}).length)
-    res.render('admin', { teams: teams, team: '', moment: moment });
-  })
-});
-
-app.post('/admin', auth.connect(basic), function(req, res) {
-  const team = new Team({name: req.body.team.name})
-  team.save(function (err) {
-    if (err) {
-      console.log('save error: ' + err);
-    }
-    team.addQuiz(10, function(err){
-      if (err) {
-        console.log('error creating quiz: ' + err);
-      }
-    })
-  })
-  return res.redirect('/admin')
-})
+app.get('/admin', auth.connect(basic), admin.index)
+app.post('/admin', auth.connect(basic), admin.createTeam)

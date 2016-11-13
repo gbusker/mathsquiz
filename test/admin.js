@@ -8,6 +8,7 @@ describe('admin page', function() {
 	  request
 	    .get('http://localhost:3000/admin')
 	    .end(function(err, res){
+        expect(err).to.not.be.null
         expect(res.status).to.equal(401)
         done()
 	  })
@@ -17,6 +18,7 @@ describe('admin page', function() {
       .get('http://localhost:3000/admin')
       .auth('username', 'password', {type: 'auto'})
       .end(function(err, res){
+        expect(err).to.be.null
         expect(res.status).to.equal(200)
         done()
       })
