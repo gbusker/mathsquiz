@@ -34,7 +34,11 @@ const TeamSchema = new Schema({
   },
   started: {type: Date},
   startedBy: {type: Schema.Types.ObjectId, ref: 'Member'},
-  ended: {type: Date}
+  ended: {type: Date},
+  nquestions: {type: Number, default: 0},
+  nanswered:  {type: Number, default: 0},
+  ncorrect:   {type: Number, default: 0},
+  nwrong:     {type: Number, default: 0}
 }, { timestamps: true })
 TeamSchema.virtual('members',{
   ref: 'Member',
@@ -59,6 +63,10 @@ TeamSchema.statics = {
     return Member.findOne({_id: id}, function (err, member) {
       return team.load(member.team, callback)
     })
+  },
+  stats: function(callback){
+    //  Team.find().populate('quiz').populate('members').exec(function(err, teams){
+    this.find().populate('quiz').populate('members').exec(callback)
   }
 }
 

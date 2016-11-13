@@ -29,7 +29,8 @@ html(lang='en')
             td= moment(t.createdAt).format('YYYY-MM-DD hh:mm')
             td= t.started ? moment(t.started).format('YYYY-MM-DD hh:mm') : ''
             td= t.ended ? (t.ended-t.started)/1000 : ''
-            td= t.quiz.length
+            td.
+              #{t.quiz.filter(function(q){return (q.a*q.b==q.answer)}).length}/#{t.quiz.length}
             td= t.members ? t.members.map(function(member){return member.name}).join() : 0
 
     div.container

@@ -130,7 +130,9 @@ app.post('/quiz', function(req, res) {
 })
 
 app.get('/admin', function(req, res) {
-  Team.find().populate('quiz').populate('members').exec(function(err, teams){
+//  Team.find().populate('quiz').populate('members').exec(function(err, teams){
+  Team.stats(function(err, teams) {
+    console.log(teams[0].quiz.filter(function(q){return (q.a*q.b==q.answer)}).length)
     res.render('admin', { teams: teams, team: '', moment: moment });
   })
 });
