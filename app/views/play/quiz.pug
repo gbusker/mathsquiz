@@ -2,7 +2,7 @@ form#quiz_form(onSubmit='quizAnswer(this);')
   h1
     = q.a + 'x' + q.b + '='
     input(type='hidden', name='quiz_id', value=q._id)
-    input#quiz_result(type='text', name='result', value='')
+    input#quiz_result(type='text', name='result', value='',autocapitalize='off', autofocus='')
     input(type='submit', value='Answer')
 
 script.
