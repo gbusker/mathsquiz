@@ -65,8 +65,10 @@ TeamSchema.statics = {
     })
   },
   stats: function(callback){
-    //  Team.find().populate('quiz').populate('members').exec(function(err, teams){
     this.find().populate('quiz').populate('members').exec(callback)
+  },
+  statsFinished: function(callback){
+    this.where("ended").ne(null).populate('quiz').populate('members').exec(callback)
   }
 }
 
