@@ -96,7 +96,7 @@ app.get('/quizstart', function(req, res) {
       member.team.started = Date.now()
       member.team.startedBy = member._id
       member.team.save(function(err, product, num) {
-        res.render('play/quiz', {member: member})
+        res.redirect('/quiz')
       })
     }
   })
@@ -128,6 +128,12 @@ app.post('/quiz', function(req, res) {
         q.answer = req.body.result
         q.answeredAt = Date.now()
         q.correct = q.a*q.b == req.body.result
+        if ( q.correct ) {
+          member.team.ncorrect++
+        } else {
+          member.team.nwrong++
+        }
+        member.team.save()
         q.save(function(err, q){
           member.team.nextQuestion(member, function(err, question){
             if ( question ) {

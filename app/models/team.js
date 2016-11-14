@@ -38,7 +38,8 @@ const TeamSchema = new Schema({
   nquestions: {type: Number, default: 0},
   nanswered:  {type: Number, default: 0},
   ncorrect:   {type: Number, default: 0},
-  nwrong:     {type: Number, default: 0}
+  nwrong:     {type: Number, default: 0},
+  score:      {type: Number}
 }, { timestamps: true })
 TeamSchema.virtual('members',{
   ref: 'Member',
@@ -68,7 +69,7 @@ TeamSchema.statics = {
     this.find().populate('quiz').populate('members').exec(callback)
   },
   statsFinished: function(callback){
-    this.where("ended").ne(null).populate('quiz').populate('members').exec(callback)
+    this.where({ended: {$ne: null}}).sort({score:1}).populate('quiz').populate('members').exec(callback)
   }
 }
 
@@ -94,7 +95,9 @@ TeamSchema.methods = {
       }
       else {
         // Close quiz
+        console.log('Close team:' + team)
         team.ended = Date.now()
+        team.score = team.timeInSeconds() + team.nwrong
         team.save(callback)
       }
     })
@@ -104,6 +107,7 @@ TeamSchema.methods = {
   },
   nextQuestion: function(member, callback) {
     var team = this
+    // Is there a question already assigned to me?
     Quiz.findOne({team: team._id, assigned: member._id, answer: null}, function(err, q){
       if (q) {
         // This should be a question for member
@@ -137,6 +141,9 @@ TeamSchema.methods = {
         Member.create(data, callback)
       }
     })
+  },
+  timeInSeconds: function(){
+    return (this.ended-this.started)/1000
   }
 }
 

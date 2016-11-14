@@ -1,0 +1,20 @@
+body
+  include ../header
+  body
+    h1 Scoreboard
+    table.table
+      tr
+        th Position
+        th Team
+        th Total score
+        th Time
+        th Mistakes
+
+
+      each team,index in teams
+        tr
+          td #{index}
+          td #{team.name}
+          td #{team.score}
+          td #{team.timeInSeconds()}
+          td #{team.ncorrect}/#{team.quiz.length}

@@ -7,7 +7,6 @@ var Team =   mongoose.model('Team')
 module.exports = {
   index: function(req, res) {
     Team.stats(function(err, teams) {
-      console.log(teams[0].quiz.filter(function(q){return (q.a*q.b==q.answer)}).length)
       res.render('admin', { teams: teams, team: '', moment: moment });
     })
   },
@@ -18,7 +17,7 @@ module.exports = {
       if (err) {
         console.log('save error: ' + err);
       }
-      team.addQuiz(10, function(err){
+      team.addQuiz(3, function(err){
         if (err) {
           console.log('error creating quiz: ' + err);
         }
