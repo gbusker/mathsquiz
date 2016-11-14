@@ -24,6 +24,7 @@ var Quiz =   mongoose.model('Quiz')
 
 // Controllers
 const admin = require('./app/controller/admin')
+const stats = require('./app/controller/stats')
 
 // Set up the pug view engine
 app.set('views', './app/views');
@@ -143,3 +144,5 @@ app.post('/quiz', function(req, res) {
 
 app.get('/admin', auth.connect(basic), admin.index)
 app.post('/admin', auth.connect(basic), admin.createTeam)
+
+app.get('/stats', stats.index)
