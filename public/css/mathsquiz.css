@@ -10,3 +10,22 @@ body.withnav {
   background-color: #222;
   border-color: #080808;
 }
+
+.label-0 {
+  background-color: #777;
+}
+.label-1 {
+  background-color: #337ab7;
+}
+.label-2 {
+  background-color: #5cb85c;
+}
+.label-3 {
+  background-color: #5bc0de;
+}
+.label-4 {
+  background-color: #f0ad4e;
+}
+.label-5 {
+  background-color: #d9534f;
+}

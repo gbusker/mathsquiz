@@ -1,3 +1,2 @@
-ul.list-group
-  each m in members
-    li.list-group-item #{m.name}
+each m, index in members
+  span.label(class="label-" + index) #{m.name}
