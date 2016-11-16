@@ -9,8 +9,7 @@ const join = require('path').join;
 const moment = require('moment')
 
 // Port to listen to
-var PORT = process.env.PORT || 3000;
-
+var PORT = process.env.PORT || 3000
 
 // Bootstrap models
 const models = join(__dirname, 'app/models');
