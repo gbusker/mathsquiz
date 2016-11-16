@@ -51,7 +51,10 @@ TeamSchema.virtual('quiz', {
   localField: '_id',
   foreignField: 'team'
 })
-
+TeamSchema.pre('remove', function(next){
+  Member.remove({team: this._id}).exec()
+  Quiz.remove({team: this._id}).exec()
+})
 TeamSchema.statics = {
   loadByName: function(name, callback) {
     return this.findOne({name: name}).populate('quiz').populate('members').exec(callback)

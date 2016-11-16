@@ -51,4 +51,26 @@ describe('Quiz', function() {
       })
     })
   })
+
+  describe('#remove', function(){
+    it('removed members', function(done){
+      var teamid = team._id
+      team.remove()
+      Member.find({team: teamid}, function(err, members) {
+        should.not.exist(err)
+        members.length.should.equal(0)
+        done()
+      })
+    })
+    it('removed quizzes', function(done){
+      var teamid = team._id
+      team.remove()
+      Quiz.find({team: teamid}, function(err, quizzes) {
+        should.not.exist(err)
+        quizzes.length.should.equal(0)
+        done()
+      })
+    })
+
+  })
 })
