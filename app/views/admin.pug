@@ -13,6 +13,21 @@ html(lang='en')
             li
               a(href='#') Leaderboard
 
+
+
+    div.container
+      if error
+        div.alert.alert-danger(role='alert')
+          span.glyphicon.glyphicon-exclamation-sign(aria-hidden='true')
+          span Error: #{error}
+
+      form(method='post')
+        p
+          label(for="team[name]") Team name
+            input(type='text', name='team[name]', value=team.name)
+          input(type='submit', value='Create')
+
+
     div.container(role='main')
       h1 Team List
       table.table
@@ -32,10 +47,3 @@ html(lang='en')
             td.
               #{t.quiz.filter(function(q){return (q.a*q.b==q.answer)}).length}/#{t.quiz.length}
             td= t.members ? t.members.map(function(member){return member.name}).join() : 0
-
-    div.container
-      form(method='post')
-        p
-          label(for="team[name]") Team name
-            input(type='text', name='team[name]', value=team.name)
-          input(type='submit', value='Create')

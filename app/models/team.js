@@ -69,7 +69,7 @@ TeamSchema.statics = {
     })
   },
   stats: function(callback){
-    this.find().populate('quiz').populate('members').exec(callback)
+    this.find().sort({createdAt:-1}).populate('quiz').populate('members').exec(callback)
   },
   statsFinished: function(callback){
     this.where({ended: {$ne: null}}).sort({score:1}).populate('quiz').populate('members').exec(callback)
