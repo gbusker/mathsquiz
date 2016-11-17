@@ -59,11 +59,13 @@ app.get('/', function(req, res) {
           res.redirect('/play')
         })
       } else {
-        res.render('index',{})
+        res.render('index',{query: req.query, error_team: 'can\t find this team'})
       }
     })
+  } else if (req.query.teamname) {
+    res.render('index', {query: req.query, error_member: 'must include a member name'});
   } else {
-    res.render('index', {});
+    res.render('index', {query: req.query});
   }
 });
 
@@ -108,7 +110,9 @@ app.get('/quiz', function(req,res) {
       // Get next question for member
       member.team.nextQuestion(member, function(err, question){
         if ( question ) {
-          res.render('play/quiz', {member: member, q: question})
+          res.render('play/quiz', {member: member,
+                                  q: question,
+                                  progress: 100.0*(member.team.ncorrect + member.team.nwrong)/member.team.nquestions})
         } else {
           res.render('play/finished', {member: member})
         }
@@ -136,7 +140,10 @@ app.post('/quiz', function(req, res) {
         q.save(function(err, q){
           member.team.nextQuestion(member, function(err, question){
             if ( question ) {
-              res.render('play/quiz', {member: member, q: question})
+              console.log(member.team)
+              res.render('play/quiz', {member: member,
+                                       q: question,
+                                       progress: 100.0*(member.team.ncorrect + member.team.nwrong)/member.team.nquestions})
             } else {
               res.render('play/finished', {member: member})
             }

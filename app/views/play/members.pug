@@ -1,2 +1,3 @@
-each m, index in members
-  span.label(class="label-" + index) #{m.name}
+b Team members:
+  each m, index in members
+    span.label.label-quiz(class="label-" + index) #{m.name}

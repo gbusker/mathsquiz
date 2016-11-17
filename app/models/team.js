@@ -4,13 +4,16 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const MemberSchema = new Schema({
-  name: String,
+  name: {type: String, trim: true, required: true},
   team: {type: Schema.Types.ObjectId, ref: 'Team'}
 })
 MemberSchema.index({name: 1, team: 1}, {unique: true})
 MemberSchema.statics = {
   load: function(id, callback) {
-    return this.findOne({_id: id}).populate({path: 'team', populate: {path: 'members'}}).exec(callback)
+    return this
+      .findOne({_id: id})
+      .populate({path: 'team', populate: {path: 'members'}})
+      .exec(callback)
   }
 }
 var Member = mongoose.model('Member', MemberSchema)
@@ -76,6 +79,7 @@ TeamSchema.statics = {
   }
 }
 
+// Random int between 1..max
 function randomint(max) {
     return Math.ceil(Math.random()*max)
 }
@@ -83,6 +87,8 @@ function randomint(max) {
 TeamSchema.methods = {
   addQuiz: function (nquestions, callback) {
     var team = this
+    team.nquestions = nquestions
+    team.save()
     for (var i=0; i<nquestions; i++) {
       this.addQuestion();
     }

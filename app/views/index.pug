@@ -10,7 +10,20 @@ html(lang='en')
     div.container(role='main')
       form
         label(for="teamname]") Team name
-          input(type='text', name='teamname', value='', autocapitalize='off')
+        .input-group
+          input(type='text', name='teamname', value=query.teamname, autocapitalize='off')
+          if error_team
+            div.alert.alert-danger(role='alert')
+              span.glyphicon.glyphicon-exclamation-sign(aria-hidden='true')
+              span #{error_team}
+
         label(for="membername") Your name
-          input(type='text', name='membername', value='', autocapitalize='off')
-        input(type='submit', value='Join')
+        .input-group
+          input(type='text', name='membername', value=query.membername, autocapitalize='off')
+          if error_member
+            div.alert.alert-danger(role='alert')
+              span.glyphicon.glyphicon-exclamation-sign(aria-hidden='true')
+              span #{error_member}
+              
+        .input-group
+          input(type='submit', value='Join team')

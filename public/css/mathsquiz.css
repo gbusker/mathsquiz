@@ -11,6 +11,16 @@ body.withnav {
   border-color: #080808;
 }
 
+
+.member {
+  display: inline-block;
+  width: 100px;
+}
+
+.label-quiz{
+  margin: 2px;
+}
+
 .label-0 {
   background-color: #777;
 }

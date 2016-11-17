@@ -11,11 +11,13 @@ html(lang='en')
       div.panel.panel-default
         div.panel-heading
           p
-            b user:
-            = member.name
-          p
-            b team:
+            b
+              span.member Your team:
             = member.team.name
+          p
+            b
+              span.member Your name:
+            = member.name
         div.panel-body
           div#members
         div.panel-body
@@ -36,5 +38,5 @@ html(lang='en')
         })
     else
       script.
-        setTimeout(function(){ location.reload();},1500)
+        //setTimeout(function(){ location.reload();},1500)
     end
