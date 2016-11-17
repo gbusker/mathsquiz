@@ -22,6 +22,7 @@ html(lang='en')
           div#members
         div.panel-body
           div#quiz
+            b Press start when all your team members have joined:
             button.btn.btn-default(onClick='startQuiz()') Start
 
 
@@ -38,5 +39,5 @@ html(lang='en')
         })
     else
       script.
-        //setTimeout(function(){ location.reload();},1500)
+        setTimeout(function(){ location.reload();},2000)
     end
