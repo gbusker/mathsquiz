@@ -140,7 +140,6 @@ app.post('/quiz', function(req, res) {
         q.save(function(err, q){
           member.team.nextQuestion(member, function(err, question){
             if ( question ) {
-              console.log(member.team)
               res.render('play/quiz', {member: member,
                                        q: question,
                                        progress: 100.0*(member.team.ncorrect + member.team.nwrong)/member.team.nquestions})
